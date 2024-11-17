@@ -43,7 +43,7 @@ function save_tasks {
 
 # Function to add a new task
 function add_task {
-    now_hourly=$(date +%d-%b-%H_%M)    
+    now_hourly=$(date +%d-%b-%H_%M  )    
     echo -n "Enter the task: "
     read task
     tasks+=("[ ] $task saved on $now_hourly")  # Add the new task to the array
