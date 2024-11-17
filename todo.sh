@@ -23,7 +23,8 @@ function show_menu {
     display_echo "$YELLOW" "2. View tasks"
     display_echo "$YELLOW" "3. Mark a task as complete"
     display_echo "$YELLOW" "4. Delete a task"
-    display_echo "$YELLOW" "5. Exit"
+    display_echo "$YELLOW" "5. Edit a task"
+    display_echo "$YELLOW" "6. Exit"
     echo -n "Choose an option: "
 }
 
@@ -51,6 +52,27 @@ function add_task {
     display_echo "$GREEN" "Task added!"
     view_tasks
 }
+
+# Function to edit an existing task
+function edit_task {
+    view_tasks
+    now_hourly=$(date +%d-%b-%H_%M  )    
+    echo -n "Enter the task number to edit: "
+    read task_number
+    if [[ $task_number -ge 1 && $task_number -le ${#tasks[@]} ]]; then
+        echo -n "Enter the new task description: "
+        read new_task
+        # Replace the entire task with the new description
+        tasks[$((task_number - 1))]="[ ] $new_task saved on $now_hourly"  # Reset completion status
+        save_tasks
+        display_echo "$GREEN" "Task updated!"
+    else
+        display_echo "$RED" "Invalid task number."
+    fi
+    
+    view_tasks
+}
+
 
 # Function to view tasks with line numbers
 function view_tasks {
@@ -112,7 +134,8 @@ while true; do
         2) view_tasks ;;
         3) mark_complete ;;
         4) delete_task ;;
-        5) exit 0 ;;
+        5) edit_task ;;
+        6) exit 0 ;;
         *) display_echo "$RED" "Invalid option. Please try again." ;;
     esac
     echo ""
